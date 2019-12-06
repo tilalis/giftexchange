@@ -6,10 +6,10 @@ from flask import Flask, Blueprint, request, jsonify, make_response
 
 from models import db, orm, Box, Savta
 
-savta = Blueprint('savta', __name__)
+api = Blueprint('savta', __name__)
 
 
-@savta.route('/box', methods=["POST"])
+@api.route('/box', methods=["POST"])
 @orm.db_session
 def create_box():
     if not request.is_json or not isinstance(request.json, list):
@@ -60,7 +60,7 @@ def create_box():
     })
 
 
-@savta.route("/box/<int:box_id>", methods=["GET"])
+@api.route("/box/<int:box_id>", methods=["GET"])
 @orm.db_session
 def get_box(box_id):
     box = Box.get(id=box_id)
@@ -79,7 +79,7 @@ def get_box(box_id):
     return jsonify(hashes)
 
 
-@savta.route("/savta/<savta_hash>", methods=["GET"])
+@api.route("/savta/<savta_hash>", methods=["GET"])
 @orm.db_session
 def get_name(savta_hash):
     savta = Savta.get(hash=savta_hash)
@@ -109,13 +109,13 @@ def get_name(savta_hash):
     return response
 
 
-@savta.before_app_first_request
+@api.before_app_first_request
 def before_first_request():
     db.bind(**settings.DB)
     db.generate_mapping(create_tables=True)
 
 
-@savta.after_request
+@api.after_request
 def after_request(response):
     response.headers.add('Access-Control-Allow-Origin', '*')
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
@@ -125,7 +125,7 @@ def after_request(response):
 
 
 app = Flask(__name__)
-app.register_blueprint(savta, url_prefix='/api')
+app.register_blueprint(api, url_prefix='/api')
 
 if __name__ == '__main__':
     app.run()
