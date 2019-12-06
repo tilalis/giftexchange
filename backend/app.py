@@ -1,7 +1,9 @@
-import random
 import settings
+import secrets as random
 
 from hashlib import md5
+from zlib import adler32
+
 from flask import Flask, Blueprint, request, jsonify, make_response
 
 from models import db, orm, Box, Savta
@@ -12,12 +14,24 @@ api = Blueprint('savta', __name__)
 @api.route('/box', methods=["POST"])
 @orm.db_session
 def create_box():
-    if not request.is_json or not isinstance(request.json, list):
-        return {"error": "WrongDataType", "message": "Data must be JSON Array!"}, 400
+    if not request.is_json:
+        return {"error": "WrongDataType", "message": "Data must be JSON!"}, 400
 
-    box = Box()
+    name = request.json.get('name')
+    savtas = request.json.get('savtas')
 
-    names = list(set(request.json))
+    if not name or not savtas:
+        return {"error": "WrongDataType", "message": "JSON should contain non-empty 'name' and 'savtas' fields!"}
+
+    box = Box(name=name)
+
+    # Shorter hash for Box object
+    box.hash = hex(adler32((
+        name + str(hash(box))
+    ).encode()))[2:]
+
+    # Need to change the algorithm, this one is quite ugly
+    names = list(set(savtas))
     nekheds = names.copy()
 
     shuffled = {}
@@ -43,6 +57,7 @@ def create_box():
 
         savta.nekhed = savtas[nekhed_name]
 
+        # Longer hash for Savta
         savta_hash = md5((
             str(box.id) + name + nekhed_name + str(hash(savta))
         ).encode()).hexdigest()
@@ -60,16 +75,16 @@ def create_box():
     })
 
 
-@api.route("/box/<int:box_id>", methods=["GET"])
+@api.route("/box/<box_hash>", methods=["GET"])
 @orm.db_session
-def get_box(box_id):
-    box = Box.get(id=box_id)
+def get_box(box_hash):
+    box = Box.get(id=box_hash)
 
     if box is None:
-        return {"message": "There is no such fox with id '{}'".format(box_id), "error": "NoSuchBox"}, 400
+        return {"message": "There is no such box '{}'".format(box_hash), "error": "NoSuchBox"}, 400
 
     hashes = {
-        "box": box.id,
+        "box": box.hash,
         "savtas": [{
             "name": savta.name,
             "hash": savta.hash
@@ -100,6 +115,7 @@ def get_name(savta_hash):
         savta.read = True
 
     response = make_response(jsonify({
+        "box": savta.box.hash,
         "name": savta.name,
         "nekhed": savta.nekhed.name,
     }))
