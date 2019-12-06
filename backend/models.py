@@ -1,4 +1,3 @@
-import settings
 from pony import orm
 
 db = orm.Database()
@@ -21,6 +20,3 @@ class Savta(db.Entity):
 
     letter_opened = orm.Required(bool, default=False)
 
-
-# db.bind(**settings.DB)
-# db.generate_mapping(create_tables=True)
