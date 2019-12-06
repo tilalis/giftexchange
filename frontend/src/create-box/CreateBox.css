@@ -1,0 +1,27 @@
+#create-box {
+  width: 90%;
+  margin: auto;
+  font-size: 2em;
+}
+
+#create-box-participants {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#create-box-name {
+  width: 100%;
+  margin-bottom: 0.5em;
+}
+
+#create-box-submit-button {
+  /* Some CSS Here */
+}
+
+.create-box-input {
+  width: 100%;
+  font-size: 0.7em;
+  padding: 0.3em;
+  margin-bottom: 0.5em;
+}
