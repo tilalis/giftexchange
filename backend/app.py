@@ -1,5 +1,8 @@
+import time
+import utils
 import settings
-import secrets as random
+
+import random
 
 from hashlib import md5
 from zlib import adler32
@@ -29,23 +32,31 @@ def create_box():
 
     # Shorter hash for Box object
     box.hash = hex(adler32((
-        name + str(hash(box))
+        name + str(time.time())
     ).encode()))[2:]
 
     # Need to change the algorithm, this one is quite ugly
+    def valid(xs, ys):
+        for x, y in zip(xs, ys):
+            if x == y:
+                return False
+
+        return True
+
     names = list(set(savtas))
     nekheds = names.copy()
 
-    shuffled = {}
+    random.shuffle(names)
+    random.shuffle(nekheds)
 
-    for name in names:
-        nekhed = random.choice(nekheds)
-        while name == nekhed:
-            nekhed = random.choice(nekheds)
+    while not valid(names, nekheds):
+        random.shuffle(names)
+        random.shuffle(nekheds)
 
-        nekheds.remove(nekhed)
-
-        shuffled[name] = nekhed
+    shuffled = {
+        name: nekhed
+        for name, nekhed in zip(names, nekheds)
+    }
 
     savtas = {
         name: Savta(box=box, name=name)
@@ -61,7 +72,7 @@ def create_box():
 
         # Longer hash for Savta
         savta_hash = md5((
-            str(box.id) + name + nekhed_name + str(hash(savta))
+            str(box.id) + name + nekhed_name + str(time.time())
         ).encode()).hexdigest()
 
         savta.hash = savta_hash
@@ -78,7 +89,8 @@ def create_box():
 
     boxes = request.cookies.get('boxes', '')
 
-    response.set_cookie(
+    utils.set_cookie(
+        response,
         "boxes",
         ";".join([box.hash] + boxes.split(';')),
         max_age=2147483647,
@@ -134,7 +146,7 @@ def get_name(savta_hash):
         "nekhed": savta.nekhed.name,
     }))
 
-    response.set_cookie(key, savta.hash, max_age=2147483647, secure=True, samesite=None)
+    utils.set_cookie(response, key, savta.hash, max_age=2147483647, secure=True, samesite=None)
 
     return response
 
