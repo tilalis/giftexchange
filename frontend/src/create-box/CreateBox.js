@@ -1,5 +1,6 @@
 import React from 'react';
 
+import API from '../api';
 import CreateBoxInput from './CreateBoxInput';
 
 import './CreateBox.css';
@@ -19,7 +20,16 @@ class CreateBox extends React.Component {
   }
 
   submit() {
-    // Some Ajax Here
+      let box = {
+        name: this.state.name,
+        savtas: this.state.values.slice(0, -1)
+      };
+
+      API.createBox(box).then((json) => {
+        console.log(json);
+      }).catch(e => {
+        alert(e.message)
+      })
   }
 
   handleNameChange(value, _) {
@@ -46,25 +56,22 @@ class CreateBox extends React.Component {
   render() {
     return (
       <div id="create-box">
-        <div id="create-box-greeting">
+        <div id="create-box-greeting" className="create-box-section">
           <h2>Hi! You can create new box here.</h2>
         </div>
 
-        <div id="create-box-name">
-          <label>
-          Box Name
+        <div id="create-box-name" className="create-box-section">
+          <label>Box Name</label>
           <CreateBoxInput
             index={-1}
             value={this.state.value}
             onChange={this.handleNameChange}
           />
-
-          </label>
         </div>
 
-        <div id="create-box-participants">
-          <label>
-          Participant Names
+        <div id="create-box-participants" className="create-box-section">
+          <label>Participant Names</label>
+
           {
             this.state.values.map((value, index) => {
               return <CreateBoxInput
@@ -75,14 +82,13 @@ class CreateBox extends React.Component {
                 />
               })
             }
-            </label>
         </div>
         <div id="create-box-submit">
           <input
             id="create-box-submit-button"
             type="button"
-            value="Submit"
-            onClick={this.submut}
+            value="Create"
+            onClick={this.submit}
           >
           </input>
         </div>
