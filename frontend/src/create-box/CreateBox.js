@@ -38,6 +38,8 @@ class CreateBox extends React.Component {
           errorMessage: ''
         })
 
+        this.props.history.push(`/box/${json.box}`)
+
       }).catch(e => {
         if (e.type === "CreateBoxMissingName") {
           this.setState({

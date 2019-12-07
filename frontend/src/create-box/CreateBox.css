@@ -60,26 +60,6 @@
   display: none;
 }
 
-.create-box-input {
-  font-size: 0.7em;
-  padding: 0.3em;
-  margin-bottom: 0.5em;
-  border: 1px solid #aaa;
-}
-
-.create-box-input:focus {
-  border-color: green;
-  outline: none;
-}
-
-.create-box-input.empty {
-  border-color: #9696e4;
-}
-
-.create-box-input.error {
-  border-color: red;
-}
-
 .create-box-section label {
   padding-bottom: 0.2em;
 }

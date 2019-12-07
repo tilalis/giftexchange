@@ -13,13 +13,12 @@ async function post(url, data) {
   ).then(response => response.json())
 }
 
-/*
 async function get(url) {
   return fetch(url, {
     method: "GET",
     credentials: "include"
   }).then(response => response.json())
-}*/
+}
 
 class APIError {
   constructor(type, message='') {
@@ -30,19 +29,27 @@ class APIError {
 
 const API = {
   async createBox(box) {
-      if (!box.name) {
-        throw new APIError("CreateBoxMissingName", "Box should have a name!")
-      }
+    if (!box.name) {
+      throw new APIError("CreateBoxMissingName", "Box should have a name!")
+    }
 
-      if (!box.savtas || !Array.isArray(box.savtas) || box.savtas.length < 2) {
-        throw new APIError("CreateBoxNoSavtas", "Box should have participants!")
-      }
+    if (!box.savtas || !Array.isArray(box.savtas) || box.savtas.length < 2) {
+      throw new APIError("CreateBoxNoSavtas", "Box should have participants!")
+    }
 
-      if (box.savtas.reduce((acc, value) => acc || value === '', false)) {
-        throw new APIError("CreateBoxEmptyBox", "Box should not be empty!")
-      }
+    if (box.savtas.reduce((acc, value) => acc || value === '', false)) {
+      throw new APIError("CreateBoxEmptyBox", "Box should not be empty!")
+    }
 
-      return post(`${server}/box`, box)
+    return post(`${server}/box`, box)
+  },
+
+  async getBox(box_hash) {
+    if (!box_hash) {
+      throw new APIError("GetBoxEmptyHash", "Box hash should not be empty!")
+    }
+
+    return get(`${server}/box/${box_hash}`)
   }
 }
 

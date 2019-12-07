@@ -1,3 +1,23 @@
 body {
   background-color:  #fbfbfb;
 }
+
+input {
+  font-size: 0.7em;
+  padding: 0.3em;
+  margin-bottom: 0.5em;
+  border: 1px solid #aaa;
+}
+
+input:focus {
+  border-color: green;
+  outline: none;
+}
+
+input.empty {
+  border-color: #9696e4;
+}
+
+input.error {
+  border-color: red;
+}
