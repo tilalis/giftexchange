@@ -23,7 +23,9 @@ def create_box():
     if not name or not savtas:
         return {"error": "WrongDataType", "message": "JSON should contain non-empty 'name' and 'savtas' fields!"}
 
-    box = Box(name=name)
+    box = Box(
+        name=name,
+    )
 
     # Shorter hash for Box object
     box.hash = hex(adler32((
@@ -64,21 +66,32 @@ def create_box():
 
         savta.hash = savta_hash
 
-    return jsonify({
-        "box": box.id,
+    response = make_response(jsonify({
+        "box": box.hash,
         "savtas": [
             {
                 "name": savta.name,
                 "hash": savta.hash
             } for savta in box.savtas
         ]
-    })
+    }))
+
+    boxes = request.cookies.get('boxes', '')
+    response.set_cookie(
+       "boxes",
+       ";".join([box.hash] + boxes.split(';')),
+       max_age=2147483647,
+       secure=True,
+       samesite=None
+    )
+
+    return response
 
 
 @api.route("/box/<box_hash>", methods=["GET"])
 @orm.db_session
 def get_box(box_hash):
-    box = Box.get(id=box_hash)
+    box = Box.get(hash=box_hash)
 
     if box is None:
         return {"message": "There is no such box '{}'".format(box_hash), "error": "NoSuchBox"}, 400
@@ -105,14 +118,14 @@ def get_name(savta_hash):
 
     cookie = request.cookies.get(key)
 
-    if savta.read and cookie != savta.hash:
+    if savta.letter_opened and cookie != savta.hash:
         return jsonify({
             "error": "ErrorAlreadyOpen",
             "message": "Name is already open"
         }), 400
 
     if cookie is None:
-        savta.read = True
+        savta.letter_opened = True
 
     response = make_response(jsonify({
         "box": savta.box.hash,
@@ -120,7 +133,7 @@ def get_name(savta_hash):
         "nekhed": savta.nekhed.name,
     }))
 
-    response.set_cookie(key, savta.hash, max_age=2147483647)
+    response.set_cookie(key, savta.hash, max_age=2147483647, secure=True, samesite=None)
 
     return response
 
@@ -133,7 +146,7 @@ def before_first_request():
 
 @api.after_request
 def after_request(response):
-    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Origin', request.environ['HTTP_ORIGIN'])
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
     response.headers.add('Access-Control-Allow-Credentials', 'true')
@@ -144,4 +157,4 @@ app = Flask(__name__)
 app.register_blueprint(api, url_prefix='/api')
 
 if __name__ == '__main__':
-    app.run()
+    app.run(threaded=True)
