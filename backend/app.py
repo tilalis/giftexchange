@@ -77,12 +77,13 @@ def create_box():
     }))
 
     boxes = request.cookies.get('boxes', '')
+
     response.set_cookie(
-       "boxes",
-       ";".join([box.hash] + boxes.split(';')),
-       max_age=2147483647,
-       secure=True,
-       samesite=None
+        "boxes",
+        ";".join([box.hash] + boxes.split(';')),
+        max_age=2147483647,
+        secure=True,
+        samesite=None
     )
 
     return response
@@ -146,9 +147,12 @@ def before_first_request():
 
 @api.after_request
 def after_request(response):
-    response.headers.add('Access-Control-Allow-Origin', request.environ['HTTP_ORIGIN'])
+    response.headers.add(
+        'Access-Control-Allow-Origin',
+        request.environ['HTTP_ORIGIN'] if 'HTTP_ORIGIN' in request.environ else '*'
+    )
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,POST')
     response.headers.add('Access-Control-Allow-Credentials', 'true')
     return response
 
