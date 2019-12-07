@@ -113,7 +113,8 @@ def get_box(box_hash):
         "box": box.hash,
         "savtas": [{
             "name": savta.name,
-            "hash": savta.hash
+            "hash": savta.hash,
+            "letter_opened": savta.letter_opened
         } for savta in box.savtas]
     }
 
