@@ -2,6 +2,11 @@
   width: 90%;
   margin: auto;
   font-size: 2em;
+  color: #111;
+}
+
+#create-bot-greeting h2 {
+  padding-bottom: 0;
 }
 
 #create-box-participants {
@@ -24,14 +29,55 @@
 }
 
 #create-box-submit-button {
-  padding: 0.5em;
+  padding: 0.6em;
   font-size: 0.6em;
+  color: white;
+  background-color: #222;
+  border: 1px solid #fff;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+#create-box-submit-button:hover {
+  background-color: #444;
+}
+
+#create-box-submit-button:active {
+  background-color: #000;
+}
+
+#create-box-submit-button:focus {
+  outline: none;
+}
+
+#create-box-error-message {
+  color: #ff5656;
+  font-weight: bold;
+  padding-bottom: 0.8em;
+}
+
+#create-box-error-message.empty {
+  display: none;
 }
 
 .create-box-input {
   font-size: 0.7em;
   padding: 0.3em;
   margin-bottom: 0.5em;
+  border: 1px solid #aaa;
+}
+
+.create-box-input:focus {
+  border-color: green;
+  outline: none;
+}
+
+.create-box-input.empty {
+  border-color: #9696e4;
+}
+
+.create-box-input.error {
+  border-color: red;
 }
 
 .create-box-section label {

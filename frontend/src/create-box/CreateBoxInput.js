@@ -14,15 +14,34 @@ class CreateBoxInput extends React.Component {
   }
 
   render() {
+    let className = "create-box-input"
+
+    switch (this.props.state) {
+      case CreateBoxInput.EMPTY:
+        className = `${className} empty`;
+        break;
+      case CreateBoxInput.ERROR:
+        className = `${className} error`;
+        break;
+      default:
+    }
+    if (this.props.isError === true) {
+      className = `${className} error`
+    }
+
     return (
       <input
         type="text"
-        className="create-box-input"
+        className={className}
         onChange={this.handleChange}
       >
       </input>
     )
   }
 }
+
+CreateBoxInput.DEFAULT = -1;
+CreateBoxInput.EMPTY = 0;
+CreateBoxInput.ERROR = 1;
 
 export default CreateBoxInput;

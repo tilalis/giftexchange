@@ -31,11 +31,11 @@ class APIError {
 const API = {
   async createBox(box) {
       if (!box.name) {
-        throw new APIError("CreateBoxMissingName", "Box should have name!")
+        throw new APIError("CreateBoxMissingName", "Box should have a name!")
       }
 
       if (!box.savtas || !Array.isArray(box.savtas) || box.savtas.length < 2) {
-        throw new APIError("CreateBoxNoSavtas", "Box should have savtas!")
+        throw new APIError("CreateBoxNoSavtas", "Box should have participants!")
       }
 
       if (box.savtas.reduce((acc, value) => acc || value === '', false)) {
@@ -45,5 +45,7 @@ const API = {
       return post(`${server}/box`, box)
   }
 }
+
+API.APIError = APIError;
 
 export default API;
