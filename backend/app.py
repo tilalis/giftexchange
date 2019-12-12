@@ -89,8 +89,7 @@ def create_box():
 
     boxes = request.cookies.get('boxes', '')
 
-    utils.set_cookie(
-        response,
+    response.set_cookie(
         "boxes",
         ";".join([box.hash] + boxes.split(';')),
         max_age=2147483647,
@@ -147,7 +146,7 @@ def get_name(savta_hash):
         "nekhed": savta.nekhed.name,
     }))
 
-    utils.set_cookie(response, key, savta.hash, max_age=2147483647, secure=True, samesite=None)
+    response.set_cookie(key, savta.hash, max_age=2147483647, secure=True, samesite=None)
 
     return response
 

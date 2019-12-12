@@ -1,4 +1,5 @@
 from werkzeug.http import dump_cookie
+from flask.wrappers import Response
 
 
 # That's a workaround for explicitly setting SameSite to None
@@ -13,3 +14,6 @@ def set_cookie(response, *args, **kwargs):
         'Set-Cookie',
         cookie
     )
+
+
+Response.set_cookie = set_cookie
