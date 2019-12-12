@@ -120,7 +120,7 @@ def get_box(box_hash):
     return jsonify(hashes)
 
 
-@api.route("/savta/<savta_hash>", methods=["GET"])
+@api.route("/letter/<savta_hash>", methods=["GET"])
 @orm.db_session
 def get_name(savta_hash):
     savta = Savta.get(hash=savta_hash)
@@ -163,9 +163,11 @@ def after_request(response):
         'Access-Control-Allow-Origin',
         request.environ['HTTP_ORIGIN'] if 'HTTP_ORIGIN' in request.environ else '*'
     )
+
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
     response.headers.add('Access-Control-Allow-Methods', 'GET,POST')
     response.headers.add('Access-Control-Allow-Credentials', 'true')
+
     return response
 
 
