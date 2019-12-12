@@ -1,6 +1,9 @@
 import time
-import utils
 import settings
+
+# This import monkey-patches flask.Response to use custom set_cookie
+# which sets cookie with SameSite=None correctly
+import same_site_cookie_fix
 
 import random
 
