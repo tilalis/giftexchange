@@ -41,7 +41,7 @@ class OpenBox extends React.Component {
     return (
       <div id="open-box">
         <div id="open-box-greeting">
-          <h2>Type your name here...</h2>
+          <h2>Type name here...</h2>
         </div>
 
         <div id="open-box-search">
