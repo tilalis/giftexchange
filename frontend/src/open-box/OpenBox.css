@@ -1,0 +1,89 @@
+#open-box {
+  width: 90%;
+  margin: auto;
+  font-size: 2em;
+  color: #111;
+}
+
+#open-box-greeting h2 {
+  padding-bottom: 0;
+  margin-bottom: 0.3em;
+}
+
+#open-box-results {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.open-box-result button {
+  width: 50%;
+  height: 100%;
+
+  font-size: 0.7em;
+
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+}
+
+.open-box-result button:hover {
+  background-color: #4b7ecc;
+  border-color: #4b7ecc;
+}
+
+.open-box-result button:active {
+  background-color: #223c63;
+  border-color: #223c63;
+}
+
+.open-box-result button:focus {
+  outline: none;
+}
+
+.open-box-result-open {
+  background-color: #31568e;
+  border: 1px solid #31568e;
+  color: #fff;
+}
+
+.open-box-result-copy {
+  background-color: #8c329c;
+  border: 1px solid #8c329c;
+  color: #fff;
+}
+
+.open-box-result-copy.true {
+  background-color: black;
+  border-color: black;
+}
+
+.open-box-result {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border: 1px solid #aaa;
+
+  width: 100%;
+  padding: 0.3em;
+  font-size: 0.7em;
+
+  margin-bottom: 0.2em;
+  margin-top: 0.2em;
+}
+
+.open-box-result.true {
+  background-color: #fde7e7;
+}
+
+.open-box-result-name {
+  display: inline-block;
+}
+
+.open-box-result-link {
+  display: inline-block;
+  width: 40%;
+}
+
+.open-box-input {
+  width: 100%;
+}

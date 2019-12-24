@@ -1,0 +1,65 @@
+#create-box {
+  width: 90%;
+  margin: auto;
+  font-size: 2em;
+  color: #111;
+}
+
+#create-bot-greeting h2 {
+  padding-bottom: 0;
+}
+
+#create-box-participants {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#create-box-name {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 0.5em;
+}
+
+#create-box-submit {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#create-box-submit-button {
+  padding: 0.6em;
+  font-size: 0.6em;
+  color: white;
+  background-color: #222;
+  border: 1px solid #fff;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+#create-box-submit-button:hover {
+  background-color: #444;
+}
+
+#create-box-submit-button:active {
+  background-color: #000;
+}
+
+#create-box-submit-button:focus {
+  outline: none;
+}
+
+#create-box-error-message {
+  color: #ff5656;
+  font-weight: bold;
+  padding-bottom: 0.8em;
+}
+
+#create-box-error-message.empty {
+  display: none;
+}
+
+.create-box-section label {
+  padding-bottom: 0.2em;
+}
